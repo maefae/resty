@@ -1,1 +1,4 @@
-# resty
+# RESTy
+
+## Author: Megan Seibert-Hughes
+
