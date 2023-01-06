@@ -5,9 +5,14 @@ import "./form.scss";
 function Form(props) {
   const [currentMethod, setCurrentMethod] = useState("GET");
   const [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon");
+  const [payload, setPayload] = useState({});
 
-  function handleChange(e) {
+  function handleURLChange(e) {
     setUrl(e.target.value);
+  }
+
+  function handleTextChange(e) {
+    setPayload(e.target.value);
   }
 
   function handleSubmit(e) {
@@ -17,6 +22,11 @@ function Form(props) {
       method: currentMethod,
       url: url,
     };
+
+    if (currentMethod === "PUT" || currentMethod === "POST") {
+      formData.payload = payload;
+    }
+
     props.handleApiCall(formData);
   }
 
@@ -25,9 +35,14 @@ function Form(props) {
       <form onSubmit={handleSubmit}>
         <label>
           <span>URL: </span>
-          <input name="url" type="text" onChange={handleChange} />
+          <input name="url" type="text" onChange={handleURLChange} />
           <button type="submit">GO!</button>
         </label>
+
+        {(currentMethod === "PUT" || currentMethod === "POST") && (
+          <textarea onChange={handleTextChange}></textarea>
+        )}
+
         <label className="methods">
           <span
             className={currentMethod === "GET" ? "active" : ""}
