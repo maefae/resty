@@ -1,6 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./app.scss";
+import axios from "axios";
 
 // Let's talk about using index.js and some other name in the component folder
 // There's pros and cons for each way of doing this ...
@@ -14,18 +15,15 @@ function App() {
   const [data, setData] = useState(null);
   const [requestParams, setRequestParams] = useState({});
 
-  function callApi(params) {
-    // mock output
-    const dummyData = {
-      count: 2,
-      results: [
-        { name: "fake thing 1", url: "http://fakethings.com/1" },
-        { name: "fake thing 2", url: "http://fakethings.com/2" },
-      ],
-    };
+  useEffect(() => {
+    callApi(requestParams);
+  }, [requestParams]);
 
-    setData(dummyData);
-    setRequestParams(params);
+  async function callApi(config) {
+    const response = await axios(config);
+
+    setData(response.data);
+    // setRequestParams(config);
     //params are whatever is being passed through
   }
 
@@ -34,7 +32,7 @@ function App() {
       <Header />
       <div>Request Method: {requestParams.method}</div>
       <div>URL: {requestParams.url}</div>
-      <Form handleApiCall={callApi} />
+      <Form setRequestParams={setRequestParams} />
       <Results data={data} />
       <Footer />
     </React.Fragment>

@@ -27,7 +27,7 @@ function Form(props) {
       formData.payload = payload;
     }
 
-    props.handleApiCall(formData);
+    props.setRequestParams(formData);
   }
 
   return (
